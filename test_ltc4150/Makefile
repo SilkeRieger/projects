@@ -8,7 +8,7 @@
 #### 
 
 # name of your project
-export PROJECT = test_hwtimer
+export PROJECT = test_ltc4150
 
 # for easy switching of boards
 ifeq ($(strip $(BOARD)),)
@@ -18,17 +18,18 @@ endif
 # this has to be the absolute path of the RIOT-base dir
 export RIOTBASE = $(CURDIR)/../../RIOT
 
-## Modules to include. 
+ifeq ($(BOARD),stm32f4discovery)
+	include Makefile.$(BOARD)
+endif
 
-#USEMODULE += shell
-#USEMODULE += uart0
-#USEMODULE += posix
-#USEMODULE += vtimer
-#USEMODULE += sht11
-#USEMODULE += ltc4150
-#USEMODULE += cc110x
-#USEMODULE += fat
+## Modules to include.
+
+USEMODULE += auto_init
+USEMODULE += hwtimer
+USEMODULE += ltc4150
+USEMODULE += crypto
 
 export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
 
 include $(RIOTBASE)/Makefile.include
+

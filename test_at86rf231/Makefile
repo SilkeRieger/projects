@@ -8,30 +8,26 @@
 #### 
 
 # name of your project
-export PROJECT = test_bloom
+export PROJECT = test_net_if
 
 # for easy switching of boards
 ifeq ($(strip $(BOARD)),)
-	export BOARD = native
+	export BOARD = agile_fox
 endif
 
-ifneq (,$(findstring msb-430,$(BOARD)))
-include $(CURDIR)/../Makefile.unsupported
-else
 # this has to be the absolute path of the RIOT-base dir
 export RIOTBASE = $(CURDIR)/../../RIOT
 
-ifeq ($(BOARD),stm32f4discovery)
-	include Makefile.$(BOARD)
-endif
+QUIET = 1
 
 ## Modules to include.
 
-USEMODULE += hashes
-USEMODULE += bloom
-USEMODULE += random
+USEMODULE += auto_init
+USEMODULE += transceiver
+USEMODULE += ieee802154
+USEMODULE += at86rf231
 
-export INCLUDES = -I$(RIOTBOARD)/$(BOARD)/include -I$(RIOTBASE)/core/include -I$(RIOTCPU)/$(CPU)/include -I$(RIOTBASE)/sys/lib -I$(RIOTBASE)/sys/include/ -I$(RIOTBASE)/drivers/include/
+INCLUDES += -I$(RIOTBASE)/sys/include -I$(RIOTBASE)/sys/net/include -I$(RIOTBASE)/drivers/at86rf231/include
 
 include $(RIOTBASE)/Makefile.include
-endif
+
